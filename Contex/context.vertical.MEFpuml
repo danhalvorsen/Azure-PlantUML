@@ -1,0 +1,20 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Context View - Vertical Micro-Frontend
+
+Person(user, "User")
+
+System_Boundary(verticalMicrofrontend, "Vertical Micro-Frontend") {
+    System(verticalApp, "Vertical Application", "React.js, Node.js", "Handles complete feature stack for a specific domain")
+    System_Ext(authService, "Authentication Service", "OAuth", "Handles user authentication and authorization")
+    System_Ext(domainService, "Domain Service", "REST API", "Provides domain-specific data and operations")
+    System_Ext(database, "Database", "MySQL", "Stores domain-specific data")
+}
+
+user -> verticalApp : Uses
+verticalApp -> authService : Authenticates User
+verticalApp -> domainService : Fetches Domain Data
+verticalApp -> database : Stores/Retrieves Data
+
+@enduml

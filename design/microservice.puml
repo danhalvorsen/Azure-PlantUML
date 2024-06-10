@@ -1,0 +1,25 @@
+@startuml
+package MicroService {
+    component [ServiceState] {
+        footer Persistence store where data is stored
+    }
+    component [OpenAPI] {
+        footer available OpenAPI specification API that expose the service behavior
+    }
+    component [PubSubEvents] {
+        footer publish events when state changes, subscribe to them can act on them
+    }
+    component [DevOpsAPI] {
+
+    }
+    component [Cache] {
+
+    }
+    component [ServiceDiscovery] {
+
+    }
+    component [Comfiguration] {
+        footer the service can enable features with configuration configuraiton is distributedd
+    }
+}
+@enduml

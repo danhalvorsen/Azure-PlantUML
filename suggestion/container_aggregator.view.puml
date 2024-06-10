@@ -1,0 +1,91 @@
+@startuml Observability
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml 
+!include <azure/AzureCommon>
+!include <azure/Analytics/AzureEventHub>
+
+' AzureEventHub(azure_event_hub, "Event Hub", "Event Hub", $sprite="event_hub")
+System_Boundary(security, "Autentication and Autorization - Multi tenancy") {
+    Container_Ext(autentication_aiutentication, "Autentication/SSO", "Autentication")
+    Container_Ext(autentication_authorization, "Accesss Control Groups", "Autorization")
+
+}
+
+System_Boundary(lyse_services, "Services") {
+    Container(customerSysten, "CMS", "Customer")
+    Container(cartSystem, "cartSystem", "Basket")
+    Container(orderSystem, "Ordering")
+    Container(catalogSystem, "Product Catalog")
+    Container_Ext(cms, "CMS", "Manages and delivers product catalog")
+}
+
+'KISS Keep It Simple Stupid Approach
+'Every service have data and internal busniuess rules on how to use internal a external data to 
+'execute a business rule
+System_Boundary(kissBoundary, "Alternative to the rule based approach. More incapsulate the rules with data", "") {
+    Container(aggregatorKiss, "Asynchronous Operations with a wait for all to complete", "Aggregation System")
+    Container(RulesKiss, "Async Rules for all tentat(Flagship)")
+    Container(RulesKiss2, "Async Rules for subset tentats", "Spesial rules like campaigns and promotions available on a subset of tentants") 
+    Container(SpesialRulesKiss, "Async Rules for all tentat operations", "Aggregation System")
+    Container(saga, "Saga pattern for securing a eventual or transactional consistency", "Business operations thouth a well organizied API")
+    Container(twoPoints, "Saga pattern for securing a eventual or transactional consistency", "Business operations thouth a well organizied API")
+    
+}
+'Aggregator'
+System_Boundary(aggregatorBoundary, "Aggregation System", "Aggregation System") {
+    Container(aggregator, "Aggregator", "Aggregation System")
+    System_Boundary(flagshipRulesBoundary, "Flagship Rules") {
+        Container(flagshipRules, "Flagship Rules")
+         Rel(flagshipRules,lyse_services , "Use the data from data services when executing the rules")
+    }
+    System_Boundary(franchiseRulesBoundary, "FranchiseRules Rules") {
+        Container(franchiseRules, "franchise Rules")
+        Rel(franchiseRules,lyse_services , "Use the data from data services when executing the rules")
+    }    
+
+    Container(rules, "Rules", "Business rules")
+    Rel(rules, flagshipRules, "Flagship Rules")
+    Rel(rules, franchiseRules, "Franchise Rules")
+
+    Rel(aggregator, rules, "Executes one or many rules")
+
+    'Workflow
+    Container(workflow, "Workflow", "Business operations thouth a well organizied API")
+
+    Rel(aggregator, workflow, "Executes one workflows")
+    Rel(workflow, rules, "one or many rules in execution order/sequence")
+
+}
+
+
+
+'Container(azure_application_insights, "Azure applicatioin insights", "")
+'Rel(logs, azure_application_insights, "Read Azure application logs")
+
+
+System_Boundary(actors, "Actors") {
+    'Person(user, "Customer", "Action: Adjust my bandwidth ", $sprite="users")
+    Person(user, "Customer", "Wants to adjust my bandwidth", $sprite="users")
+    
+ }
+
+'API Gateway
+System_Boundary(api_gateway_boundary, "API Gateway") {
+   'Container(api_gateway, "API Gateway", "Business operations thouth a well organizied API")
+  
+   Container(api_gateway, "API Gateway", "Executes one or many busniuess and validation rules")
+   Rel(api_gateway, aggregator, "Expose", "Business operations thought API GW") 
+   Rel(api_gateway, kissBoundary, "Use", "Business operations  thought API GW") 
+   Rel(kissBoundary, lyse_services, "Use", "Business operations thought API GW") 
+
+   
+
+   Rel(user, api_gateway, "Uses API gateway")
+   
+}
+
+
+
+SHOW_FLOATING_LEGEND()
+ 
+@enduml

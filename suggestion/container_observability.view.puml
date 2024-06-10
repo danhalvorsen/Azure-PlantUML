@@ -1,0 +1,64 @@
+@startuml Observability
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml 
+!include <azure/AzureCommon>
+!include <azure/Analytics/AzureEventHub>
+
+
+AzureEventHub(azure_event_hub, "Event Hub", "Event Hub", $sprite="event_hub")
+
+ 
+'Observability
+System_Boundary(observabilityBoundary, "Observability System", "Observability System") {
+    Container(observability, "Observability", "Observability System")
+    Container(logs, "Logs", "Application Insigts")
+    Container(traces, "Traces", "Tracing System")
+    Container(metrics, "Metrics", "Metrics System")
+    Container(eventAggregator, "Events", "Aggregations of events and patterns of events")
+    
+    Rel(observability, logs, "Uses logs from aggregation of logs")
+    Rel(observability, traces, "Uses trances from aggregation of traces")
+    Rel(observability, metrics, "Uses metrics from aggregation of metrics")
+    Rel(observability, eventAggregator, "Uses metrics from aggregation of metrics")
+
+    Rel(eventAggregator, azure_event_hub, "Uses logs from aggregation of logs")
+    
+}
+
+
+Container(azure_application_insights, "Azure applicatioin insights", "")
+
+Container(graphanalytics, "Dash boards for system health", "Monitoring System")
+
+
+
+
+
+Rel(logs, azure_application_insights, "Read Azure application logs")
+
+
+System_Boundary(actors, "Actors") {
+    Person(user, "Technical Personal", "Troubleshooting", $sprite="users")
+    Person(operationalReport, "Reporing", "Operational Report")
+    Person(reporting, "Reporting", "Reporting System")
+    Person(operation_system_monitoring, "Monitoring", "Monitoring System")
+    Person(proactive, "Proactive error detection", "Discouver bugs before the customers and/or Business")
+ }
+
+'API Gateway
+System_Boundary(api_gateway_boundary, "API Gateway") {
+   Container(api_gateway, "API Gateway", "Make the observability API more future proof. Adapter pattern for breaking hard dependencies.")
+   Rel(api_gateway, observability, "Uses observability from aggregation of observability") 
+
+   Rel(user, api_gateway, "Uses API gateway")
+   Rel(operationalReport, api_gateway, "Uses API gateway")
+   Rel(reporting, api_gateway, "Uses API gateway and observability with reporting tools e.g Excel or PowerBI")
+   Rel(operation_system_monitoring, api_gateway, "Operational monitoring thougth the API gateway")
+   Rel(proactive, api_gateway, "Proactive errors, performance, reliability, and security detection and reporting")
+}
+
+
+
+SHOW_FLOATING_LEGEND()
+ 
+@enduml

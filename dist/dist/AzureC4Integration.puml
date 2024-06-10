@@ -1,0 +1,94 @@
+' Legends
+' ##################################
+
+!ifdef COMPONENT_BG_COLOR
+    !define COMPONENT_LEGEND
+!else
+    !ifdef CONTAINER_BG_COLOR
+        !define CONTAINER_LEGEND
+    !else
+        !define CONTEXT_LEGEND
+    !endif
+!endif
+
+!ifdef CONTEXT_LEGEND
+    !definelong LAYOUT_WITH_LEGEND
+        hide <<person>> stereotype
+        hide <<external_system>> stereotype
+        hide <<system>> stereotype
+        hide <<external_system>> stereotype
+        legend right
+        |=              |= Type |
+        |<PERSON_BG_COLOR>      | person |
+        |<EXTERNAL_PERSON_BG_COLOR>      | external person |
+        |<SYSTEM_BG_COLOR>   | system |
+        |<EXTERNAL_SYSTEM_BG_COLOR>      | external system |
+        |<AZURE_BG_COLOR>       | Azure service container |
+        endlegend
+    !enddefinelong
+!endif
+
+!ifdef CONTAINER_LEGEND
+    !definelong LAYOUT_WITH_LEGEND
+        hide <<person>> stereotype
+        hide <<external_system>> stereotype
+        hide <<system>> stereotype
+        hide <<external_system>> stereotype
+        hide <<container>> stereotype
+        legend right
+        |=              |= Type |
+        |<PERSON_BG_COLOR>      | person |
+        |<EXTERNAL_PERSON_BG_COLOR>      | external person |
+        |<SYSTEM_BG_COLOR>   | system |
+        |<EXTERNAL_SYSTEM_BG_COLOR>      | external system |
+        |<CONTAINER_BG_COLOR>   | container |
+        |<AZURE_BG_COLOR>       | Azure service container |
+        endlegend
+    !enddefinelong
+!endif
+
+!ifdef COMPONENT_LEGEND
+    !definelong LAYOUT_WITH_LEGEND
+        hide <<person>> stereotype
+        hide <<external_system>> stereotype
+        hide <<system>> stereotype
+        hide <<external_system>> stereotype
+        hide <<container>> stereotype
+        hide <<component>> stereotype
+        legend right
+        |=              |= Type |
+        |<PERSON_BG_COLOR>      | person |
+        |<EXTERNAL_PERSON_BG_COLOR>      | external person |
+        |<SYSTEM_BG_COLOR>   | system |
+        |<EXTERNAL_SYSTEM_BG_COLOR>      | external system |
+        |<CONTAINER_BG_COLOR>   | container |
+        |<AZURE_BG_COLOR>       | Azure service container |
+        |<COMPONENT_BG_COLOR>   | component |
+        endlegend
+    !enddefinelong
+!endif
+
+' Elements
+' ##################################
+!$C4 = true
+' override getSprite function from C4.puml to add sprite color tag
+!function $getSprite($sprite)
+  ' if it starts with & it's a OpenIconic, details see https://useiconic.com/open/
+  ' if it starts with img: it's an image, details see https://plantuml.com/creole
+  !if (%substr($sprite, 0, 1) != "&" && %substr($sprite, 0, 4) != "img:")
+    !$formatted = "<$" + $sprite + ">"
+  !else
+    !$formatted = "<" + $sprite + ">"
+  !endif
+  !$color = %get_variable_value("$" + $sprite + "spriteColor")
+  !$formatted = "<color:" + $color + ">" + $formatted  + "</color>"
+  !return $formatted
+!endfunction
+
+UpdateElementStyle("component", $AZURE_BG_COLOR, "#000000", $AZURE_BORDER_COLOR)
+
+!procedure AzureEntity($alias, $label="",$color="#00FFFF", $techn="", $descr="", $sprite="", $tags="", $link="", $stereo="")
+  %set_variable_value("$" + $sprite + "spriteColor", $color)
+  $getElementLine("rectangle", "component", $alias, $label, $techn, $descr, $sprite, $tags, $link )
+!endprocedure
+

@@ -1,0 +1,33 @@
+@startuml CreateApi
+title CreateApi
+
+!define AzurePum dist/
+' !define AzurePuml https://raw.githubusercontent.com/plantuml-stdlib/Azure-PlantUML/release/2-2/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Analytics/AzureEventHub.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/Storage/AzureDataLakeStorage.puml
+!includeurl AzurePuml/Analytics/AzureStreamAnalyticsJob.puml
+!includeurl AzurePuml/InternetOfThings/AzureTimeSeriesInsights.puml
+!includeurl AzurePuml/Web/AzureAPIManagement.puml
+!includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
+ !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ LAYOUT_LEFT_RIGHT
+
+!define CreateApi(Title, ApiLabel, webAppLabel  ) [
+   
+    System_Bounday(IDd112, "apiLabel", "", "" ) {
+        
+        System(A12, "apiLabel", "", "") {
+            AzureAPIManagement( A4, "apiLabel", "", "") {
+               
+            }
+             AzureWebApp(A5, "apiLabel", "", "") {
+
+             }
+        }
+    }
+]
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml CreateWebApp
+title CreateWebApp
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+!define AzurePuml dist/dist/ 
+
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Analytics/AzureEventHub.puml
+!includeurl AzurePuml/Analytics/AzureStreamAnalyticsJob.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+
+
+left to right direction
+
+agent "Device Simulator" as devices #fff
+
+
+devices --> fareDataEventHub
+devices --> tripDataEventHub
+fareDataEventHub --> streamAnalytics
+tripDataEventHub --> streamAnalytics
+streamAnalytics --> outputCosmosDb
+
+@enduml
+ 

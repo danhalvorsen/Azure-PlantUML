@@ -1,0 +1,89 @@
+@startuml Observability
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context diagram Min Side Protal - Senarrio - As a customer I want to adjust my bandwidth
+Person(customer, "altibox customer", "As a Customer of altibox i want to be flexibiity to adjust mybandwidth so that it fits my needs")
+
+System_Boundary(api_gateway, "API Gateway") {
+    System(lyse_api_gateway, "Lyse API Gateway with services", "Common API where customers and internal systems can interact with systems though a well design Lyse API")
+    System(lyse_event_hub, "Lyse Event Hub", "Allows customers to view information about their bank accounts, and make payments.")
+    System(lyse_aggreator, "Lyse Aggregator", "Transactional Service")
+    
+}
+
+System(lyse_observability, "Lyse Observability", "Observability")
+
+System_Boundary(notification_systems, "Notification Systems") {
+    System_Ext(mail_system, "E-mail system", "The internal Microsoft Exchange e-mail system.")
+    System_Ext(slack, "Slack Messaging", "Slack")
+    System_Ext(teams, "Teams", "Teams")
+}
+
+System_Boundary(security, "Autentication and Autorization - Multi tenancy") {
+    System_Ext(autentication_aiutentication, "Autentication/SSO", "Autentication")
+    System_Ext(autentication_authorization, "Accesss Control Groups", "Autorization")
+
+}
+
+System_Boundary(applications, "Applications") {
+    System(min_side_application, "Min Side Portal", "Cross Platform Appication|Web App|Native App")
+    System_Ext(min_side_system, "Min Side System", "System that support the Lyse - Way do change my bandwidth ")
+
+    ' Rel(min_side_system, lyse_event_hub,  "Publish events to subscribers")
+
+}
+
+System_Boundary(lyse_biz_serivces, "Services") {
+    System(customerSysten, "Customer")
+    System(cartSystem, "cartSystem", "Basket")
+    System(orderSystem, "Ordering")
+    System(catalogSystem, "Catalog")
+    System_Ext(cms, "CMS", "Manages and delivers product catalog")
+}
+
+
+'Applications
+Rel(applications, api_gateway, "Applications use thought the bff the aggregator to execute business requirements")
+' Rel(applications, lyse_api_gateway, "Use Lyse API as BFF", "")
+' Rel(applications, autentication_aiutentication, "Get a access token", "If needed")
+
+'API Gateway
+Rel(api_gateway, api_gateway, "Events can start a new aggreation process")
+Rel(api_gateway, lyse_biz_serivces, "Aggregator use services to fullfill busniess requriments")
+Rel(lyse_api_gateway, lyse_event_hub, "Source Of Events", "Http")
+' Rel(lyse_api_gateway, autentication_aiutentication, "Redirect to autenication if token is missing or not valid", "Http")
+' Rel(lyse_api_gateway, autentication_authorization, "Validate token (Claims) for given API", "Http")
+Rel(api_gateway, security, "Uses", "OAuth2.0 for authentication")
+
+'Events 
+Rel(lyse_biz_serivces, lyse_event_hub, "Sends Events")
+
+
+'Customer
+Rel(customer, api_gateway, "Customer of Lyse", "Adjust my bandwidth")
+' Rel_Back(customer, notification_systems, "Sends notifications to")
+' Rel_Neighbor(lyse_api_gateway, notification_systems, "Sends notifications to", "SMTP|Slack|Teams")
+' Rel(lyse_api_gateway, min_side_system, "Uses")
+' Rel(lyse_event_hub, min_side_system, "Subscriber to events")
+
+
+'lyse_observability
+' Rel(api_gateway, lyse_observability, "Send Trace|Error|Logs|Warnings", "Web Socket")
+' Rel(lyse_biz_serivces, lyse_observability, "Send Trace|Error|Logs|Warnings", "Web Socket")
+' Rel(security, lyse_observability, "Send Trace|Error|Logs|Warnings", "Web Socket")
+' Rel(applications, lyse_observability, "Send Trace|Error|Logs|Warnings", "Web Socket")
+
+'notifcation
+Rel(api_gateway, notification_systems, "Send Trace|Error|Logs|Warnings", "Web Socket")
+
+' Rel(min_side_system, lyse_observability, "Publish Events|Error|Logs|Warnings", "Http")
+' Rel(lyse_api_gateway, lyse_observability, "Send Trace|Error|Logs|Warnings", "Http")
+Rel(lyse_aggreator, lyse_api_gateway, "Transactional safe produkts", "Http")
+
+' Rel(lyse_aggreator, min_side_system, "")
+@enduml

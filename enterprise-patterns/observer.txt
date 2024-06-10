@@ -1,0 +1,38 @@
+@startuml
+interface Subject {
+    + attach(observer: Observer): void
+    + detach(observer: Observer): void
+    + notify(): void
+}
+
+interface Observer {
+    + update(): void
+}
+
+class ConcreteSubject implements Subject {
+    - observers: List<Observer>
+    + attach(observer: Observer): void
+    + detach(observer: Observer): void
+    + notify(): void
+}
+
+class ConcreteObserver implements Observer {
+    + update(): void
+}
+
+Subject : +attach(observer: Observer): void
+Subject : +detach(observer: Observer): void
+Subject : +notify(): void
+
+ConcreteSubject : -observers: List<Observer>
+ConcreteSubject : +attach(observer: Observer): void
+ConcreteSubject : +detach(observer: Observer): void
+ConcreteSubject : +notify(): void
+
+Observer : +update(): void
+ConcreteObserver : +update(): void
+
+ConcreteSubject - Observer
+Observer <|-- ConcreteObserver
+
+@enduml

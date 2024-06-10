@@ -1,0 +1,13 @@
+@startuml Main
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include <office/users/users.puml>
+
+ LAYOUT_LEFT_RIGHT
+
+title WebApp
+
+LAYOUT_LEFT_RIGHT()
+
+CreateApIGateway()
+
+@enduml

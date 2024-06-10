@@ -1,0 +1,16 @@
+
+@startuml CMS_Component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+'stdlib users.puml defines sprite "users"
+!include <office/users/users.puml>
+System_Boundary(cmsSystemBoundary, "CMS System") {
+    System(cmsSystem, "CMS", "", "", "") {
+
+        Component(cmsComponent, "CMS", "", "", "")
+        Component(database, "Database", "", "")
+
+        Rel(cmsComponent, database, "use", "CMS Database Schema")
+    }
+}
+@enduml

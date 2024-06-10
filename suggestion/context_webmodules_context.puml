@@ -1,0 +1,48 @@
+
+@startuml WebModulesContext 
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+' Make a stencil web component with children so it declears a well knowed module where built 
+' as web components in Stencil JS syntax. 
+' Compile and deploy the definition or transpiled code to the wanted supported UI framework 
+' Make the module data binded to a data contract, so that the modules can 
+' 1. Polling data for a data source 
+' 2. Be event driven, so when the data is modified then the module will subscripe on a event that makes
+' the module to re-render itself with new data. 
+
+title Web Module by using the existing Stencil JS web component framework 
+
+System_Boundary(module_declaration_boundary, "Common Module Declaration") {
+    System(module, "Common Module Declaration") {
+        System(fetchDataModule, "FetchDataModule") {
+        }
+        
+    }
+
+    System(transpiled_module, "Transpiled Module") {
+    }
+
+    System(cdn_deployed_module, "Deploy CommonModule to CDN") {
+    }
+
+    Rel(module, transpiled_module, "Stencil JS tooling", "Transpiled Module") 
+    Rel(transpiled_module, cdn_deployed_module, "transpiled to", "Module Deployed") 
+
+    System_Boundary(pages, "Pages") {
+        
+        System(pageOne, "Page One", "Content") {
+            Rel(pageOne, cdn_deployed_module, "use(LazyLoad)", "Common Module")
+        }
+
+        System(pageTwo, "Page Two", "Content") {
+            Rel(pageTwo, cdn_deployed_module, "use (LazyLoad)", "Common Module")
+        }
+    }
+}
+
+
+LAYOUT_WITH_LEGEND()
+@enduml

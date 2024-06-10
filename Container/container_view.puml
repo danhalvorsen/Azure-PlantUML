@@ -1,0 +1,43 @@
+
+@startuml apigateway
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+'stdlib users.puml defines sprite "users"
+!include <office/users/users.puml>
+
+AddRelTag("plantuml", $textColor="$ARROW_FONT_COLOR", $lineColor="$ARROW_COLOR", $sprite="img:http://plantuml.com/logo3.png{scale=0.3}", $legendSprite="img:http://plantuml.com/logo3.png{scale=0.1}", $legendText="console triggered")
+
+System_Boundary(apigateway, "Api-Gateway", "Route") {
+
+    System(features, "Gateway Features - Cross Cutting concerns") {
+     
+    Container(autentication , "Autentication ", "", "", "")
+    Container(authorization , "Authorization ", "", "", "")
+    Container(cache , "Cache ", "", "", "")
+    Container(mapping , "Mapping ", "", "", "")
+    Container(authorization , "Authorization ", "", "", "")
+    Container(graphql , "GraphQL", "", "", "")
+    Container(restful , "Restful", "", "", "")
+    Container(webSocket, "WebSocket", "", "", "")
+    
+    }
+    
+
+    System_Boundary(ccs, "Kubernetes") {
+    Container(kubernetes , "Kubernetes ", "", "", "")
+    
+    System_Boundary(ccc, "Customers") {
+        System_Boundary(greenCustomer, "Green") {
+            Container(green21, "Pod1 - Customers - Green", "", "", "")
+        }
+        System_Boundary(blueCustomer, "Blue") {
+            Container(green22, "Pod2 - Customers - Blue", "", "", "")    
+        }
+    'SystenBoundary    
+    }
+    }
+}
+    
+
+SHOW_LEGEND()
+@enduml

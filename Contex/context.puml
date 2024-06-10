@@ -1,0 +1,18 @@
+@startuml context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include ./web_browser/application_shell_module.puml
+!include feature_microfrontend_module.puml
+!include utility_microfrontend_module.puml
+!include vertical_microfrontend_module.puml
+!include horizontal_microfrontend_module.puml
+title System Context Diagram for MEF
+Person(user  , user , "<$user> <$web_app_user>\n System User" )
+' Actor(User, "User")
+System_Boundary(MEF_System, "MEF System") {
+}
+Rel_Down(User, [ApplicationShell], "Interacts with")
+Rel_Down([ApplicationShell], [FeatureMicroFrontend], "Contains")
+Rel_Down([ApplicationShell], [UtilityMicroFrontend], "Contains")
+Rel_Down([ApplicationShell], [VerticalMicroFrontend], "Contains")
+Rel_Down([ApplicationShell], [HorizontalMicroFrontend], "Contains")
+@enduml

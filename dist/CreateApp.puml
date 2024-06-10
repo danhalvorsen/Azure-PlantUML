@@ -1,0 +1,23 @@
+@startuml CreateApp
+title CreateApp
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ 
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ 
+!define AzurePuml dist/Azure-PlantUML.puml
+!include AzurePuml/AzureCommon.puml
+ 
+!include AzurePuml/Compute/AzureFunction.puml
+
+!define C4Test(apiTitle, apiLabel, webAppLabel) [
+    System_Boundary(systemBoundary, "", "", "") { 
+        System(service,"" , "", "") {
+            AzureAPIManagement(azureAPIManagement1, "AzureAPI Management", "", "") {
+                 
+                AzureWebApp(azureWebApp1, webAppLabel, "", "")
+            }
+        }
+    }
+]
+
+@enduml

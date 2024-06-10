@@ -1,0 +1,21 @@
+@startuml
+!include <C4/C4_Container>
+
+' Define the System Boundary
+System_Boundary(microserviceBoundary, "Microservice Boundary") {  
+    ' Define the Service
+    System(ppShellAlias, subsystemName, description, "") {
+        ' Create Subsystems using a Function
+        !function createSubsystem(subModuleAlias, subModuleName, subModulDescription) {
+            Container(subModuleAlias, subModuleName, "Container", subModulDescription)
+        }
+
+        ' Calling subsystems defined using the function
+        createSubsystem("subsystem1", "Subsystem 1", "Subsystem 1 Description")
+        createSubsystem("subsystem2", "Subsystem 2", "Subsystem 2 Description")
+
+        ' Create a relationship between the subsystems
+        subsystem1 --> subsystem2
+    }
+}
+@enduml

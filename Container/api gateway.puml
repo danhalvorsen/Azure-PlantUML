@@ -1,0 +1,17 @@
+@startuml
+package ApiGatewat {
+    component [API] {
+        footer Vertical 1 implementation
+    }
+    component [OpenAPI] {
+        footer Vertical 2 implementation
+    }
+    component [ProtocolTransformation] {
+        footer Vertical 2 implementation
+    }
+    component [DevOpsAPI] {}
+    component [Cache] {}
+    component [ServiceDiscovery] {
+    }
+}
+@enduml

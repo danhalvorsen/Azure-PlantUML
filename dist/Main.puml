@@ -1,0 +1,34 @@
+
+
+@startuml CreateApi
+title CreateApi
+
+!include https://github.com/plantuml/plantuml-stdlib/tree/master/C4
+!define https://github.com/plantuml/plantuml-stdlib/tree/master/azure
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/Analytics/AzureEventHub.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/Storage/AzureDataLakeStorage.puml
+!includeurl AzurePuml/Analytics/AzureStreamAnalyticsJob.puml
+!includeurl AzurePuml/InternetOfThings/AzureTimeSeriesInsights.puml
+!includeurl AzurePuml/Web/AzureAPIManagement.puml
+!includeurl AzurePuml/Web/AzureWebApp.puml
+!includeurl AzurePuml/DevOps/AzureApplicationInsights.puml
+ 
+ 
+
+!define CreateApi(a,b,c )[
+        System_Boundary(apigateway, "Api-Gateway", "Route") {
+            System(ASDS, "Gateway Features - Cross Cutting concerns", "", "") {
+            
+            AzureAPIManagement( A12, "DSAD", "", "") {
+            }
+
+            AzureWebApp(ADSA, "DSAD", "", "") { 
+            }
+            }
+        
+    }
+]
+@enduml

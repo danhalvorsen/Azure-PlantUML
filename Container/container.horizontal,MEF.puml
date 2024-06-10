@@ -1,0 +1,27 @@
+@startuml pro
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Context View - Horizontal Micro-Frontend
+
+Person(devTeam, "Development Team")
+
+System_Ext(applicationShell, "Application Shell", "React.js", "Hosts and orchestrates multiple micro-frontends")
+
+System_Boundary(horizontalMicrofrontend, "Horizontal Micro-Frontend") {
+
+    System_Boundary(coreSystemsBoundary, "Core Micro-Frontend Components") {
+        System(uiComponents, "UI Components", "StencilJS, React.js", "Provides reusable UI components")
+        System(businessLogic, "Business Logic Service", "Node.js", "Implements reusable business logic")
+        System(dataAccess, "Data Access Layer", "Java", "Handles data access for various domains")
+    }
+    System_Boundary(externalSystemsBoundary, "Core Micro-Frontend Components") {
+        System_Boundary(ExternalSystems, "External Systems") {   
+        System_Ext(configService, "Configuration Service", "REST API", "Manages application configurations")
+
+    }
+}
+
+
+
+}
+@enduml

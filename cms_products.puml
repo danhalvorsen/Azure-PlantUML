@@ -1,0 +1,20 @@
+@startuml CMS_Products
+ 
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+System_Boundary(cmsProductBoudary, "CMS Products Boundary") {
+
+Component(cmsProductsAPI, "CMS Products API")
+Component(cmsProducts, "CMS Products")
+Component(cmsDatabase, "CMS Database") 
+Component(cmsDatabaseProductSchema, "CMS Database Product Schema") 
+
+Rel(cmsProductsAPI, cmsProducts, "", "")
+Rel(cmsProducts, cmsDatabase, "", "")
+Rel(cmsDatabase, cmsDatabaseProductSchema , "", "")
+
+}
+
+
+
+@enduml
