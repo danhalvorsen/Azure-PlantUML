@@ -1,0 +1,41 @@
+@startuml
+!define C4_COMPONENT
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_TOP_DOWN()
+
+Container_Boundary(server, "Server") {
+    Component(assembler, "Assembler", "Node.js/Express", "Responsible for assembling micro-frontends")
+    Component(router, "Router", "Node.js/Express", "Routes incoming requests")
+
+    Component_Boundary(ui, "UI Module") {
+        Component(webComponent, "WebComponent", "HTML/CSS/JavaScript", "Handles WebComponent functionality")
+        Component(react, "React", "HTML/CSS/JavaScript", "Handles React functionality")
+        Component(angular, "Angular", "HTML/CSS/JavaScript", "Handles Angular functionality")
+        Component(vue, "Vue", "HTML/CSS/JavaScript", "Handles Vue functionality")
+    }
+
+    Component_Boundary(config, "Config Module") {
+        Component(configSection, "Configuration Section", "HTML/CSS/JavaScript", "Handles configuration settings for all modules")
+    }
+
+    Component_Boundary(dataComm, "DataCommunication Module") {
+        Component(webSocket, "WebSocket", "HTML/CSS/JavaScript", "Handles WebSocket communication")
+        Component(httpClient, "HttpClient", "HTML/CSS/JavaScript", "Handles HTTP communication")
+        Component(graphQL, "GraphQL", "HTML/CSS/JavaScript", "Handles GraphQL communication")
+    }
+
+    assembler --> ui : "Assembles"
+    assembler --> config : "Assembles"
+    assembler --> dataComm : "Assembles"
+
+    configSection --> webComponent : "Configures"
+    configSection --> react : "Configures"
+    configSection --> angular : "Configures"
+    configSection --> vue : "Configures"
+    configSection --> webSocket : "Configures"
+    configSection --> httpClient : "Configures"
+    configSection --> graphQL : "Configures"
+}
+
+assembler --> router : "Handles request routing"
+@enduml

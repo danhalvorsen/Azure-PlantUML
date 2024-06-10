@@ -1,0 +1,27 @@
+@startuml
+!define C4_CONTAINER
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_TOP_DOWN()
+
+Person(user, "User")
+
+Container_Boundary(web, "Hybrid Composition") {
+    Container(server, "Server", "Node.js/Express", "Handles initial rendering and assembly")
+    Container(webapp, "Web Application", "HTML/CSS/JavaScript", "Initial assembled application served to the client")
+    Container(clientApp, "Client Application", "JavaScript/SPA", "Handles dynamic interactions")
+    Container(mfUI, "Micro-frontend UI", "HTML/CSS/JavaScript", "Handles UI functionality")
+    Container(mfConfig, "Micro-frontend Config", "HTML/CSS/JavaScript", "Handles configuration settings")
+    Container(mfDataComm, "Micro-frontend DataCommunication", "HTML/CSS/JavaScript", "Handles data communication")
+
+    server --> mfUI : "Assembles UI module"
+    server --> mfConfig : "Assembles Config module"
+    server --> mfDataComm : "Assembles DataCommunication module"
+    server --> webapp : "Serves initial assembled application"
+    webapp --> clientApp : "Loads for dynamic interactions"
+    clientApp --> mfUI : "Loads UI module"
+    clientApp --> mfConfig : "Loads Config module"
+    clientApp --> mfDataComm : "Loads DataCommunication module"
+}
+
+user --> webapp : "Accesses"
+@enduml

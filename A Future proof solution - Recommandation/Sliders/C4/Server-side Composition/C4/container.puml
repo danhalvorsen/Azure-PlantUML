@@ -1,0 +1,22 @@
+@startuml
+!define C4_CONTAINER
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_TOP_DOWN()
+
+Person(user, "User")
+
+Container_Boundary(web, "Server-side Composition") {
+    Container(server, "Server", "Node.js/Express", "Responsible for assembling micro-frontends")
+    Container(webapp, "Web Application", "HTML/CSS/JavaScript", "Assembled application served to the client")
+    Container(mfUI, "Micro-frontend UI", "HTML/CSS/JavaScript", "Handles UI functionality")
+    Container(mfConfig, "Micro-frontend Config", "HTML/CSS/JavaScript", "Handles configuration settings")
+    Container(mfDataComm, "Micro-frontend DataCommunication", "HTML/CSS/JavaScript", "Handles data communication")
+
+    server --> mfUI : "Assembles UI module"
+    server --> mfConfig : "Assembles Config module"
+    server --> mfDataComm : "Assembles DataCommunication module"
+    server --> webapp : "Serves assembled application"
+}
+
+user --> webapp : "Accesses"
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+!define C4_COMPONENT
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_TOP_DOWN()
+
+Container_Boundary(webapp, "Web Application") {
+    Component(appShell, "Application Shell", "JavaScript/SPA", "Responsible for initial load and routing")
+    Component(mfLoader, "Micro-frontend Loader", "JavaScript", "Dynamically loads micro-frontends")
+
+    Component(ui, "UI Module", "JavaScript", "Handles UI functionality")
+    Component(config, "Config Module", "JavaScript", "Handles configuration settings")
+    Component(dataComm, "DataCommunication Module", "JavaScript", "Handles data communication")
+
+    mfLoader --> ui : "Loads"
+    mfLoader --> config : "Loads"
+    mfLoader --> dataComm : "Loads"
+}
+
+appShell --> mfLoader : "Loads micro-frontends dynamically"
+@enduml

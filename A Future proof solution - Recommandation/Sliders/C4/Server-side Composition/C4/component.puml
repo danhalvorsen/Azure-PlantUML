@@ -1,0 +1,20 @@
+@startuml
+!define C4_COMPONENT
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_TOP_DOWN()
+
+Container_Boundary(server, "Server") {
+    Component(assembler, "Assembler", "Node.js/Express", "Responsible for assembling micro-frontends")
+    Component(router, "Router", "Node.js/Express", "Routes incoming requests")
+
+    Component(ui, "UI Module", "HTML/CSS/JavaScript", "Handles UI functionality")
+    Component(config, "Config Module", "HTML/CSS/JavaScript", "Handles configuration settings")
+    Component(dataComm, "DataCommunication Module", "HTML/CSS/JavaScript", "Handles data communication")
+
+    assembler --> ui : "Assembles"
+    assembler --> config : "Assembles"
+    assembler --> dataComm : "Assembles"
+}
+
+assembler --> router : "Handles request routing"
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+!define C4_COMPONENT
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_TOP_DOWN()
+
+Container_Boundary(c0, "Hybrid Composition") {
+    Component(c1, "Server", "Node.js/Express", "Responsible for initial rendering and assembling the micro-frontends")
+    Component(c2, "Micro-frontend A", "HTML/CSS/JavaScript", "A micro-frontend component")
+    Component(c3, "Micro-frontend B", "HTML/CSS/JavaScript", "Another micro-frontend component")
+    Component(c4, "Micro-frontend C", "HTML/CSS/JavaScript", "Yet another micro-frontend component")
+    Component(c5, "Web Application", "HTML/CSS/JavaScript", "Assembled UI served to the client")
+    Component(c6, "Client-side Framework", "JavaScript/SPA", "Responsible for dynamic interactions")
+
+    c1 --> c2 : "Assembles micro-frontend"
+    c1 --> c3 : "Assembles micro-frontend"
+    c1 --> c4 : "Assembles micro-frontend"
+    c1 --> c5 : "Serves assembled UI"
+    c5 --> c6 : "Initial load with server-side rendered content"
+    c6 --> c2 : "Loads dynamic content"
+    c6 --> c3 : "Loads dynamic content"
+    c6 --> c4 : "Loads dynamic content"
+}
+
+@enduml

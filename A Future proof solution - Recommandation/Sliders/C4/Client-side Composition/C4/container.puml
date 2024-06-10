@@ -1,0 +1,20 @@
+@startuml
+!define C4_CONTAINER
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_TOP_DOWN()
+
+Person(user, "User")
+
+Container_Boundary(web, "Client-side Composition") {
+    Container(webapp, "Web Application", "JavaScript/SPA", "Main application shell")
+    Container(mfUI, "Micro-frontend UI", "JavaScript", "Handles UI functionality")
+    Container(mfConfig, "Micro-frontend Config", "JavaScript", "Handles configuration settings")
+    Container(mfDataComm, "Micro-frontend DataCommunication", "JavaScript", "Handles data communication")
+
+    webapp --> mfUI : "Loads UI module"
+    webapp --> mfConfig : "Loads Config module"
+    webapp --> mfDataComm : "Loads DataCommunication module"
+}
+
+user --> webapp : "Accesses"
+@enduml

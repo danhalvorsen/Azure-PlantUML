@@ -1,0 +1,17 @@
+@startuml
+!define C4_COMPONENT
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_TOP_DOWN()
+
+Container_Boundary(c0, "Client-side Composition") {
+    Component(c1, "Web Application", "JavaScript/SPA", "Responsible for rendering the UI")
+    Component(c2, "Micro-frontend A", "JavaScript", "A micro-frontend component")
+    Component(c3, "Micro-frontend B", "JavaScript", "Another micro-frontend component")
+    Component(c4, "Micro-frontend C", "JavaScript", "Yet another micro-frontend component")
+
+    c1 --> c2 : "Loads micro-frontend"
+    c1 --> c3 : "Loads micro-frontend"
+    c1 --> c4 : "Loads micro-frontend"
+}
+
+@enduml
